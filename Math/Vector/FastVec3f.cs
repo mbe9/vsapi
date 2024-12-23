@@ -98,6 +98,11 @@ namespace Vintagestory.API.MathTools
             return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
+        public float LengthSq()
+        {
+            return X * X + Y * Y + Z * Z;
+        }
+
         public void Negate()
         {
             this.X = -X;

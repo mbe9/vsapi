@@ -1,24 +1,30 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
+using ProtoBuf;
 
 namespace Vintagestory.API.MathTools
 {
     /// <summary>
     /// Represents a vector of 3 doubles
     /// </summary>
+    [ProtoContract]
     public struct FastVec3d
     {
         /// <summary>
         /// The X-Component of the vector
         /// </summary>
+        [ProtoMember(1)]
         public double X;
         /// <summary>
         /// The Y-Component of the vector
         /// </summary>
+        [ProtoMember(2)]
         public double Y;
         /// <summary>
         /// The Z-Component of the vector
         /// </summary>
+        [ProtoMember(3)]
         public double Z;
 
 
@@ -92,6 +98,11 @@ namespace Vintagestory.API.MathTools
             return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
+        public double LengthSq()
+        {
+            return X * X + Y * Y + Z * Z;
+        }
+
         public void Negate()
         {
             this.X = -X;
@@ -117,6 +128,11 @@ namespace Vintagestory.API.MathTools
         /// <param name="a"></param>
         /// <returns></returns>
         public double Dot(Vec3d a)
+        {
+            return X * a.X + Y * a.Y + Z * a.Z;
+        }
+
+        public double Dot(FastVec3d a)
         {
             return X * a.X + Y * a.Y + Z * a.Z;
         }
@@ -180,6 +196,24 @@ namespace Vintagestory.API.MathTools
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FastVec3d Add(FastVec3d vec)
+        {
+            this.X += vec.X;
+            this.Y += vec.Y;
+            this.Z += vec.Z;
+            return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FastVec3d Sub(FastVec3d vec)
+        {
+            this.X -= vec.X;
+            this.Y -= vec.Y;
+            this.Z -= vec.Z;
+            return this;
+        }
+
         /// <summary>
         /// Adds given BlockPos's x/y/z coordinates to the vector
         /// </summary>
@@ -196,6 +230,7 @@ namespace Vintagestory.API.MathTools
         /// </summary>
         /// <param name="multiplier"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public FastVec3d Mul(double multiplier)
         {
             this.X *= multiplier;
@@ -297,6 +332,18 @@ namespace Vintagestory.API.MathTools
         public FastVec3d AddCopy(FastVec3d vec)
         {
             return new FastVec3d(X + vec.X, Y + vec.Y, Z + vec.Z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FastVec3d SubCopy(FastVec3d vec)
+        {
+            return new FastVec3d(X - vec.X, Y - vec.Y, Z - vec.Z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public FastVec3d MulCopy(double mult)
+        {
+            return new FastVec3d(X * mult, Y * mult, Z * mult);
         }
 
 
